@@ -1,0 +1,116 @@
+.dynamic-form-builder {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .form-elements, .form-preview {
+    flex: 1;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  .draggable-element {
+    background-color: #f0f0f0;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: move;
+    border-radius: 5px;
+  }
+  
+  .drop-zone {
+    min-height: 200px;
+    border: 2px dashed #ccc;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  .form-element {
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    position: relative;
+  }
+  
+  .edit-button, .remove-button {
+    position: absolute;
+    top: 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  
+  .edit-button {
+    right: 40px;
+  }
+  
+  .remove-button {
+    right: 5px;
+  }
+  
+  .empty-form {
+    text-align: center;
+    color: #999;
+  }
+  
+  .submit-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 20px;
+  }
+  
+  .edit-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  .edit-modal label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  .edit-modal input {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+  }
+  
+  .options-editor .option {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 5px;
+  }
+  
+  input, textarea, select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .checkbox-wrapper, .radio-option {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .checkbox-wrapper input, .radio-option input {
+    width: auto;
+  }
