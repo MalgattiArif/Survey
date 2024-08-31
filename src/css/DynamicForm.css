@@ -1,3 +1,5 @@
+
+
 .dynamic-form-builder {
     display: flex;
     gap: 20px;
@@ -105,12 +107,16 @@
     border-radius: 4px;
   }
   
-  .checkbox-wrapper, .radio-option {
+  .checkbox-option, .radio-option {
     display: flex;
     align-items: center;
     gap: 5px;
   }
   
-  .checkbox-wrapper input, .radio-option input {
+  .checkbox-option input, .radio-option input {
     width: auto;
+  }
+  .form-element label {
+    display: block;
+    text-align: left;
   }

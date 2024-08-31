@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
-import './Login.css';
+import '../css/Login.css';
+import { useNavigate } from 'react-router-dom';
+
 
 const Login = () => {
     const [isLogin, setIsLogin] = useState(true);
-
+    const navigate =useNavigate();
+    
     // State variables for login form
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
+    ;
 
     // State variables for registration form
     const [registerUsername, setRegisterUsername] = useState('');
@@ -21,7 +25,7 @@ const Login = () => {
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
 
-        // Simple validation
+        
         if (loginEmail === '' || loginPassword === '') {
             alert('Please fill in all fields');
             return;
@@ -35,14 +39,20 @@ const Login = () => {
                 },
                 body: JSON.stringify({ 
                     email: loginEmail, 
-                    password: loginPassword 
+                    password: loginPassword,
                 }),
             });
     
             const data = await response.json();
             if (response.ok) {
-                alert('Login successful');
+               const userProfile=data.user.user_type;
                 
+
+                alert(`Login successful logintype:${userProfile}`);
+               if(userProfile==="admin")
+                    navigate('/dynamic-form');
+               else 
+                    navigate('/home');
                 setLoginEmail('');
                 setLoginPassword('');
             } else {
@@ -56,11 +66,12 @@ const Login = () => {
     const handleRegisterSubmit = async (e) => {
         e.preventDefault();
 
-        // Simple validation
+       
         if (registerUsername === '' || registerEmail === '' || registerPassword === '' || userType === '') {
             alert('Please fill in all fields');
             return;
         }
+
         try {
             const response = await fetch('http://localhost:5000/api/register', {
                 method: 'POST',
@@ -82,17 +93,17 @@ const Login = () => {
                 setRegisterUsername('');
                 setRegisterEmail('');
                 setRegisterPassword('');
+                setUserType('');
             } else {
                 alert(data.message);
             }
         } catch (error) {
             console.error('Error during registration:', error);
         }
-
-        
     };
 
     return (
+    <div className="container">
         <div className="wrapper">
             {isLogin ? (
                 <div className="login-form">
@@ -100,7 +111,7 @@ const Login = () => {
                         <h1>Login</h1>
                         <div className="input-box">
                             <input 
-                                type="text" 
+                                type="email" 
                                 placeholder="Email" 
                                 value={loginEmail} 
                                 onChange={(e) => setLoginEmail(e.target.value)} 
@@ -111,7 +122,7 @@ const Login = () => {
                         <div className="input-box">
                             <input 
                                 type="password" 
-                                placeholder="password" 
+                                placeholder="Password" 
                                 value={loginPassword} 
                                 onChange={(e) => setLoginPassword(e.target.value)} 
                                 required 
@@ -135,7 +146,7 @@ const Login = () => {
                         <div className="input-box">
                             <input 
                                 type="text" 
-                                placeholder="username" 
+                                placeholder="Username" 
                                 value={registerUsername} 
                                 onChange={(e) => setRegisterUsername(e.target.value)} 
                                 required 
@@ -145,7 +156,7 @@ const Login = () => {
                         <div className="input-box">
                             <input 
                                 type="email" 
-                                placeholder="email address" 
+                                placeholder="Email Address" 
                                 value={registerEmail} 
                                 onChange={(e) => setRegisterEmail(e.target.value)} 
                                 required 
@@ -155,7 +166,7 @@ const Login = () => {
                         <div className="input-box">
                             <input 
                                 type="password" 
-                                placeholder="password" 
+                                placeholder="Password" 
                                 value={registerPassword} 
                                 onChange={(e) => setRegisterPassword(e.target.value)} 
                                 required 
@@ -174,10 +185,9 @@ const Login = () => {
                                 <option value="admin">Admin</option>
                                 <option value="user">User</option>
                             </select>
-                            <i className="bx bxs-id-card"></i>
                         </div>
                         <div className="remember-forgot">
-                            <label><input type="checkbox" /> I agree to the terms and conditions</label>
+                            <input type="checkbox" /> I agree to the terms and conditions
                         </div>
                         <button type="submit" className="btn">Register</button>
                         <div className="login-link">
@@ -187,6 +197,7 @@ const Login = () => {
                 </div>
             )}
         </div>
+    </div>
     );
 };
 

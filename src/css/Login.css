@@ -4,12 +4,12 @@
     box-sizing: border-box;
     font-family:Verdana, Geneva, Tahoma, sans-serif;
 }
-body{
+.container{
     display:flex;
     justify-content: center;
     align-items:center;
     min-height: 100vh;
-    background: url('img.jpg') no-repeat;
+    background: url('../assets/img.jpg') no-repeat;
     background-position: center;
     background-size: cover;
 }

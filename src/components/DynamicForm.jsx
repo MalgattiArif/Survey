@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './DynamicForm.css';
+import '../css/DynamicForm.css';
 
 const formElements = [
   { type: 'text', defaultLabel: 'Text Input' },
@@ -37,7 +37,7 @@ export default function DynamicForm() {
       label: defaultLabel,
       name: defaultLabel.toLowerCase().replace(/\s+/g, '_'),
       placeholder: `Enter ${defaultLabel.toLowerCase()}`,
-      options: ['radio', ,'select'].includes(elementType) ? [
+      options: ['radio', 'select', 'checkbox'].includes(elementType) ? [
         { label: 'Option 1', value: 'option1' },
         { label: 'Option 2', value: 'option2' }
       ] : undefined
@@ -49,6 +49,9 @@ export default function DynamicForm() {
     setForm(form.map(element => 
       element.id === id ? { ...element, ...updates } : element
     ));
+    if (editingElement && editingElement.id === id) {
+      setEditingElement({ ...editingElement, ...updates });
+    }
   };
 
   const removeElement = (id) => {
@@ -63,6 +66,12 @@ export default function DynamicForm() {
       }
       return element;
     }));
+    if (editingElement && editingElement.id === elementId) {
+      setEditingElement({
+        ...editingElement,
+        options: [...editingElement.options, { label: `Option ${editingElement.options.length + 1}`, value: `option${editingElement.options.length + 1}` }]
+      });
+    }
   };
 
   const removeOption = (elementId, optionIndex) => {
@@ -72,6 +81,12 @@ export default function DynamicForm() {
       }
       return element;
     }));
+    if (editingElement && editingElement.id === elementId) {
+      setEditingElement({
+        ...editingElement,
+        options: editingElement.options.filter((_, index) => index !== optionIndex)
+      });
+    }
   };
 
   const updateOption = (elementId, optionIndex, updates) => {
@@ -84,6 +99,14 @@ export default function DynamicForm() {
       }
       return element;
     }));
+    if (editingElement && editingElement.id === elementId) {
+      setEditingElement({
+        ...editingElement,
+        options: editingElement.options.map((option, index) => 
+          index === optionIndex ? { ...option, ...updates } : option
+        )
+      });
+    }
   };
 
   const renderFormElement = (element) => {
@@ -105,9 +128,18 @@ export default function DynamicForm() {
         return <textarea {...commonProps} />;
       case 'checkbox':
         return (
-          <div className="checkbox-wrapper">
-            <input {...commonProps} type="checkbox" />
-            <label htmlFor={element.id}>{element.label}</label>
+          <div className="checkbox-group">
+            {element.options?.map((option, index) => (
+              <div key={index} className="checkbox-option">
+                <input 
+                  type="checkbox" 
+                  id={`${element.id}-${index}`} 
+                  name={element.name} 
+                  value={option.value} 
+                />
+                <label htmlFor={`${element.id}-${index}`}>{option.label}</label>
+              </div>
+            ))}
           </div>
         );
       case 'radio':
@@ -150,14 +182,14 @@ export default function DynamicForm() {
     }
 
     try {
-      const response = await fetch('/api/submit-form', {
+      const response = await fetch('http://localhost:5000/api/create-form', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ formName, formElements: form }),
       });
-
+      console.log("Response:",response);
       if (response.ok) {
         alert("Form submitted successfully!");
         setForm([]);
